@@ -7,10 +7,9 @@ assignees: ''
 
 ---
 
-**99. 직장탈출 - FastToeGeun**
-> **이번 주 KPT 회고**
-직장탈출 KPT 팀 회고 공유합니다.
-링크 : https://github.com/codestates/Memory.log-Client/issues/9
+**10. Coco - NodongU**
+Team Coco Stand up Meeting  회고 공유합니다.
+링크 : 
 
 > **프로젝트 진행상황 공유**
 **SR 체크리스트**
@@ -19,18 +18,18 @@ assignees: ''
  [ v ] 시스템 아키텍처 설계 및 스키마 작성
  [ v ] API 문서 작성
  [ v ] 프로젝트 태스크 카드 작성 및 분배 & 마일스톤 작성
- [  ] Wiki 기본 틀 작성(팀 규칙 등)
+ [ v ] Wiki 기본 틀 작성(팀 규칙 등)
  [ v ] KPT 회고 양식 이슈카드 생성
  [  ] 프로젝트 기획 설문조사 메일 발송
 
 **Sprint 진행상황**
- [ v ] Sprint1
+ [  ] Sprint1
     [  ] Bare minimum
-    [ v ] 배포 : 클라이언트/서버 Hello world 띄우기
+    [  ] 배포 : 클라이언트/서버 Hello world 띄우기
  [  ] Sprint2
  [  ] Sprint3
 
 **- 도움이 필요한 사항 ( 원칙은 헬프 데스크를 이용해 주시기 바랍니다 )**
   : X
 **- 특이사항**
-  : 팀원이 아파서 금일 작업 참여가 힘들다고 합니다. 이슈 쉐어링을 남겼습니다.
+  : X
