@@ -1,6 +1,14 @@
 const express = require('express');
 const app = express();
 const port = 80;
+const cors = require('cors');
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+);
 
 function handleListening(req, res) {
   res.send('hello world')
