@@ -1,16 +1,14 @@
 const express = require('express');
 const app = express();
 const cors = require("cors");
-
 const port = 80;
 const cors = require('cors');
+const logger = require('morgan');
+const axios = require('axios');
+const cookieParser = require("cookie-parser");
 
-app.use(
-  cors({
-    origin: true,
-    credentials: true
-  })
-);
+// const userControllers = require("./controllers/index.js"); // script 작성 후 주석해제 요청
+// const myListControllers = require("./controllers/myList.js");
 
 app.use(cors({
   origin: "*",
