@@ -3,6 +3,14 @@ const app = express();
 const cors = require("cors");
 
 const port = 80;
+const cors = require('cors');
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+);
 
 app.use(cors({
   origin: "*",
