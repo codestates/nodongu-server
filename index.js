@@ -9,6 +9,12 @@ const cookieParser = require("cookie-parser");
 // const userControllers = require("./controllers/index.js"); // script 작성 후 주석해제 요청
 // const myListControllers = require("./controllers/myList.js");
 
+//테스트 용도
+
+
+
+
+
 app.use(cors({
   origin: "*",
   methods: ["GET, POST, OPTIONS"],
