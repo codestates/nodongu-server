@@ -11,10 +11,6 @@ const cookieParser = require("cookie-parser");
 
 //테스트 용도
 
-
-
-
-
 app.use(cors({
   origin: "*",
   methods: ["GET, POST, OPTIONS"],
