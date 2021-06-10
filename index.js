@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const cors = require("cors");
 const port = 80;
 const logger = require('morgan');
 const axios = require('axios');
@@ -20,7 +19,10 @@ app.use(cors({
   methods: ["GET, POST, OPTIONS"],
   credentials: true,
   preflightContinue: true
-}));
+})
+);
+
+
 
 function handleListening(req, res) {
   res.send('hello world')
