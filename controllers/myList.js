@@ -1,5 +1,8 @@
 // myList CRUD routing
-const { user, mylist, index } = require("../models")
+const { user, mylist, play, playlist } = require("../models")
 
-let find = user.findOne({ where: { id: 1 } });
-console.log(find);
+const getUser = async () => {
+  return await user.findAll();
+}
+let find = getUser()
+find.then(res => console.log(res))
