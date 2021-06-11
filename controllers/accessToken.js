@@ -14,10 +14,10 @@ module.exports = {
     }); // refreshToken 보내기
   },
   resAccessToken: (res, accessToken) => {
-    res.json({ data: { accessToken }, message: "ok" });
+    res.json({ data: { accessToken, userInfo: userData }, message: "ok" });
   }, // accessToken 보내기
-  reissueAccessToken: (res, accessToken, data) => {
-    res.json({ data: { accessToken, userInfo: data }, message: "ok" });
+  reissueAccessToken: (res, accessToken) => {
+    res.json({ data: { accessToken}, message: "ok" });
   }, // 
   isAuthorized: (req) => {
     const authorization = req.headers["authorization"];
