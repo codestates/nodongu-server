@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const userControllers = require("./controllers/index"); 
-// const myListControllers = require("./controllers/myList.js");
+const myListControllers = require("./controllers/myList");
 
 //테스트 용도
 
