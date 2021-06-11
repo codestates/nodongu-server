@@ -11,9 +11,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      title: {
-        type: Sequelize.STRING
-      },
       videoid: {
         type: Sequelize.STRING
       },
@@ -21,14 +18,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       user_id: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",
-        onUpdate: "CASCACE",
-        references: {
-          model: "users",
-          key: "id"
-        }
+        onUpdate: "CASCADE",
+        references: {model: "users", key: "id"}
       },
       createdAt: {
         allowNull: false,

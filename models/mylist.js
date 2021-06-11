@@ -17,16 +17,16 @@ module.exports = (sequelize, DataTypes) => {
       });
       mylist.belongsToMany(models.play, {
         through: 'playlist',
-        as: 'play',
+        as: 'link_play',
         foreignKey: 'mylist_id'
       });
     }
   };
   mylist.init({
     name: DataTypes.STRING,
-    title: DataTypes.STRING,
     videoid: DataTypes.STRING,
-    thumbnail: DataTypes.STRING
+    thumbnail: DataTypes.STRING,
+    user_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'mylist',
