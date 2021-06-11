@@ -9,8 +9,9 @@ const cors = require('cors');
 const userControllers = require("./controllers/index"); 
 const myListControllers = require("./controllers/myList");
 
-//테스트 용도
-
+app.use(logger('dev')); 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false })); 
 app.use(cors({
   origin: "*",
   methods: ["GET, POST, OPTIONS"],
