@@ -10,7 +10,7 @@ const {
     reissueAccessToken,
     isAuthorized,
     authRefeshToken
-  } = require('./accessToken');
+  } = require('./token/tokenMethod');
 
 
 module.exports = {
