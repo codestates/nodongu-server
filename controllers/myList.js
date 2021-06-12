@@ -6,7 +6,7 @@ const { user, mylist } = require("../models")
     const func = async() => {
       let find =  await mylist.findAll({
         where: {userId: 1},// req.body.userId
-        // attributes: ['id', 'name', 'createdAt']
+        attributes: ['id', 'listTitle', 'createdAt']
       })
       // let join = await play.findAll({
       //   include: 'link_mylist'
