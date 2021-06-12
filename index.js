@@ -27,8 +27,8 @@ app.use(cors({
 //   res.send('hello world!')
 // })
 
-app.use('/nod/user', userRouter)
-app.use('/nod', myListRouter)
+app.use('/user', userRouter)
+app.use('/', myListRouter)
 
 
 app.listen(port, () => {
