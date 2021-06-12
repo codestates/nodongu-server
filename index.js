@@ -21,7 +21,6 @@ app.use(cors({
   })
 );
 
-// routing 
 // Connection test
 // app.get("/", (req,res) => {
 //   res.send('hello world!')
@@ -29,7 +28,6 @@ app.use(cors({
 
 app.use('/user', userRouter)
 app.use('/', myListRouter)
-
 
 app.listen(port, () => {
   console.log(`서버테스트 포트 ${port}`)
