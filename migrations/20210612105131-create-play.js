@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      musicid: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      videoid: {
-        allowNull: false,
+      title: {
         type: Sequelize.STRING
       },
       thumbnail: {

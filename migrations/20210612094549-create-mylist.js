@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      listtitle: {
+      listTitle: {
         type: Sequelize.STRING
       },
       userId: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {model: "users", key: "id"},
         onDelete: 'CASCADE',

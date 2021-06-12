@@ -1,11 +1,11 @@
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('play', {
-    title: {
+    musicid: {
       type: DataTypes.STRING(40),
       allowNull: false,
     },
-    videoid: {
+    title: {
       type: DataTypes.STRING(40),
       allowNull: false,
     },
