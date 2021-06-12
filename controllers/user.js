@@ -1,6 +1,5 @@
 // 회원 CRUD routing
 const express = require('express');
-const bodyParser = require('body-parser');
 const {user} = require('../models/user'); // db에서 users table 땡겨오기.
 const {
     makeAccessToken,
@@ -16,11 +15,11 @@ const {
 module.exports = {
     signIn: async (req, res) => {
 
-        if(req.body.email && req.body.password) {
-            res.status(200).send("Login successfully")
-        } else {
-            res.status(404).send("Step aside!")
-        } // routing 시험용 코드
+        // if(req.body.email && req.body.password) {
+        //     res.status(200).send("Login successfully")
+        // } else {
+        //     res.status(404).send("Step aside!")
+        // } // routing 시험용 코드
        
        // 이메일이 존재하지 않을 때, 비밀번호가 틀렸을 때 각각 다른 404 res 보내줄 것. 
        await user.findOne({
@@ -40,11 +39,12 @@ module.exports = {
                         res.status(404).send({loginSuccess: false, message: "비밀번호가 일치하지 않습니다"}) 
                     } else { // 이메일이 존재하고, password가 일치하는 경우 
                         
-                        const accessToken = makeAccessToken(data.dataValues); // 토큰은 다른 모듈에서 생성되서 전달될 예정. 
+                        // const accessToken = makeAccessToken(data.dataValues); // 토큰은 다른 모듈에서 생성되서 전달될 예정. 
+                         // res.send({loginSuccess: true, userId: data.dataValues.id, data: {accessToken}}); // accessToken res.body에 넣어서 발송.
+                       
                         const refreshToken = makeRefreshToken(data.dataValues);
-                        
                         resRefreshToken(res, refreshToken)  // refreshToken 쿠키에 넣어서 발송 
-                        res.send({loginSuccess: true, userId: data.dataValues.id, data: {accessToken}}); // accessToken res.body에 넣어서 발송.
+                       
                     }
                 })    
             }
@@ -57,14 +57,11 @@ module.exports = {
     signOut: async (req, res) => {
         
         const accessTokenData = isAuthorized(req); // 토큰 유효성 검증
-
         if (accessTokenData) {
             res.status(200).send("Logged out successfully")
-        
         } else {    
             res.status(400).send("you're currently not logined") 
         }  
-            
             res.status(500).send("error"); // 서버에러 
     },
 
@@ -76,22 +73,33 @@ module.exports = {
         // } else {
         //     res.status(404).send("Not enough informations!")
         // } // routing 시험용 코드
-        // const {nickname, email, password} = req.body;
+        // 닉네임 중복여부 구현
         
         await user.findOne({
             where: {email: req.body.email}
-        }).then(existedData => {
+        }).then(existedEmail => {
             
-            if (existedData) { // db에 email이 이미 존재할 경우, 400 status와 에러메세지 뿜뿜
+            if (existedEmail) { // db에 email이 이미 존재할 경우, 400 status와 에러메세지 뿜뿜
                 res.status(409).send("Is the email that already exists.")
             } 
-             // db에 회원정보가 없으니 정상적으로 회원가입 진행/ 
-            user.create({
-                email: req.body.email,
-                nickname: req.body.nickname,
-                password: req.body.password, // responseData에 id, createdAt, updatedAt 포함되는지 확인. 
-                }).then(responseData => res.status(201).send(responseData))
-                
+
+            user.findOne({ // db에 nickname 존재하는지 체크
+                where: {nickname: req.body.nickname}
+            }).then(existedNickname => {
+
+                if(existedNickname) {
+                    res.status(409).send("Is the nickname that already exists.")
+                }
+
+                 // db에 회원정보가 없으니 정상적으로 회원가입 진행/ 
+                user.create({
+                    email: req.body.email,
+                    nickname: req.body.nickname,
+                    password: req.body.password, // responseData에 id, createdAt, updatedAt 포함되는지 확인. 
+                    }).then(responseData => res.status(201).send(responseData))
+
+            }) 
+
         }).catch(err => {
             console.log(err);
         })
@@ -137,7 +145,7 @@ module.exports = {
         // }
 
         // 닉네임 일치여부 확인
-        const checkNickname = await user.findOne({
+        await user.findOne({
             where: {
                 nickname: req.body.nickname
             }
@@ -146,7 +154,7 @@ module.exports = {
             if(data) {
                 res.status(409).send("Is the nickname that already exists.")
             } else {
-                await user.update(
+                user.update(
                     {nickname: req.body.nickname},
                     {image: req.body.image},
                     {password: req.body.password},
