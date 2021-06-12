@@ -5,14 +5,14 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '../config/config')[env];
+const config = require(__dirname + '/../config/config.json')[env]
 const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(config);
 }
 
 fs
@@ -33,5 +33,30 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+db.user = require('./user')(sequelize, Sequelize);
+db.mylist = require('./mylist')(sequelize, Sequelize);
+db.play = require('./play')(sequelize, Sequelize);
+db.playlist = require('./playlist')(sequelize, Sequelize);
+
+/* user : mylist = 1 : N */
+db.user.hasMany(db.mylist);
+db.mylist.belongsTo(db.user, {
+  foreignKey: { name: 'userId', allowNull: true },
+  onDelete: 'CASCADE'
+});
+/* mylist : playlist = 1 : N */
+db.mylist.hasMany(db.playlist);
+db.playlist.belongsTo(db.mylist, {
+  foreignKey: { name: 'mylistId', allowNull: true },
+  onDelete: 'CASCADE'
+});
+/* play : playlist = 1 : N */
+db.play.hasMany(db.playlist);
+db.playlist.belongsTo(db.play, {
+  foreignKey: { name: 'playId', allowNull: true },
+  onDelete: 'CASCADE'
+});
+
 
 module.exports = db;

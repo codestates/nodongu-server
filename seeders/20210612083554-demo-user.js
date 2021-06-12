@@ -2,10 +2,15 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('playlist', [{
-      mylist_id: 2,
-      play_id: 1
-    }], {});
+    return queryInterface.bulkInsert('users', [
+      {
+        email: 'a@b.com',
+        nickname: 'c',
+        password: 'd',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
   },
 
   down: async (queryInterface, Sequelize) => {

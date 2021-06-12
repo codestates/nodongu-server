@@ -1,35 +1,12 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class mylist extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      mylist.belongsTo(models.user, {
-        foreignKey: { name: "user_id", allowNull: false },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
-      });
-      mylist.belongsToMany(models.play, {
-        through: 'playlist',
-        as: 'link_play',
-        foreignKey: 'mylist_id'
-      });
+  return sequelize.define('mylist', {
+    listtitle: {
+      type: DataTypes.STRING(80),
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
-  };
-  mylist.init({
-    name: DataTypes.STRING,
-    videoid: DataTypes.STRING,
-    thumbnail: DataTypes.STRING,
-    user_id: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'mylist',
-  });
-  return mylist;
+    });
 };

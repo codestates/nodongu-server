@@ -8,7 +8,7 @@ const cors = require('cors');
 
 const userControllers = require("./controllers/index"); 
 const myListControllers = require("./controllers/myList");
-const playConrollers = require("./controllers/play");
+const playControllers = require("./controllers/play");
 const youtubeApiControllers = require("./controllers/youtubeApi");
 
 app.use(logger('dev')); 
@@ -37,20 +37,17 @@ app.get("/userinfo",  userControllers.getUserInfo)
 // app.get("/auth", )
 
 //2. mylist 테이블 라우팅
-app.get("/getMyList", myListControllers)
-app.post("/addMyList", myListControllers)
+app.get("/getMyList", myListControllers.getMyList)
+app.post("/addMyList", myListControllers.addMyList)
 
 //3. play 테이블 라우팅
-app.get("/getMusicList", playConrollers)
-app.post("/addMusic", playConrollers)
+app.get("/getMusicList", playCotnrollers.getMusicList)
+app.post("/addMusic", playCotnrollers.addMusic)
 
 //4. 유튜브 API 요청
 app.get("/keyowrdMusic", youtubeApiControllers)
 
 
-//sequelize 객체화하고 RDS연동
-const sequelize = require('./models').sequelize;
-sequelize.sync();
 
 app.listen(port, () => {
   console.log(`서버테스트 포트 ${port}`)
