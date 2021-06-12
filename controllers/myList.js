@@ -1,20 +1,80 @@
 // myList CRUD routing
-const { user, mylist } = require("../models")
+const { user, mylist, play, playlist } = require("../models")
 
-// module.exports = {
-  // getMyList: async (req, res) => {
-    const func = async() => {
-      let find =  await mylist.findAll({
-        where: {userId: 1},// req.body.userId
-        attributes: ['id', 'listTitle', 'createdAt']
-      })
+module.exports = {
+
+  getMyList: (req, res) => {
+    mylist.findAll({
+      where: { userId: req.body.userId },
+      attributes: ['id', 'listTitle', 'createdAt']
+    }).then(find => {
+
+      if(find.length === 0) {
+        res.status(404).send({ success: false })
+      } else {
+        let data = find.map(el => el.dataValues)
+        res.status(200).send({ success: true, data: data })
+      }
+    });
+  },
+
+  addMyList: (req, res) => {
+    mylist.create({
+      listTitle: req.body.title,  
+      userId: req.body.userId
+    }).then(find => {
+      res.status(200).send({ success: true })
+    }).catch(err => {
+      res.status(404).send({ success: false })
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+    // const result = await mylist.findAll({
+    //   where: { userId: req.body.userId },
+    //   attributes: ['id', 'listTitle', 'createdAt']
+    // });
+//     if(!result) {
+//       res.status(404).send({ success: false })
+//     } else {
+//       let data = result.map(el => el.dataValues)
+//       res.status(200).send({ success: true, data: data })
+//     }
+//   }
+// }
+    
+      
+    
+      // let result = await mylist.findAll({ include: user });
       // let join = await play.findAll({
-      //   include: 'link_mylist'
+      //   include: [{
+      //     model: mylist,
+      //     through: {
+      //       attributes: ['musicid', 'title', 'thumbnail'],
+      //       where: { playId: 1 }
+      //     }
+      //   }]
       // });
-      return find;
-    }
-    let find = func()
-    find.then(res => console.log(res))
+
+    
+    
     
 //     if(!myList) {
 //       res.status(404).send({ success: false });
