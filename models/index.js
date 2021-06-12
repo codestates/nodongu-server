@@ -48,13 +48,14 @@ db.mylist.belongsTo(db.user, {
 /* mylist : playlist = 1 : N */
 db.mylist.hasMany(db.playlist);
 db.playlist.belongsTo(db.mylist, {
-  foreignKey: 'mylistId',
+  foreignKey: 'mylistId', 
   onDelete: 'CASCADE'
 });
 /* play : playlist = 1 : N */
 db.play.hasMany(db.playlist);
 db.playlist.belongsTo(db.play, {
-  foreignKey: 'playId'
+  foreignKey: 'playId', 
+  onDelete: 'CASCADE'
 });
 
 

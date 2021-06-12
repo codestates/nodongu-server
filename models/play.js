@@ -7,11 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       type: DataTypes.STRING(40),
-      allowNull: false,
     },
     thumbnail: {
       type: DataTypes.STRING(80),
-      allowNull: false,
     }
   });
 };

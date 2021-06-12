@@ -6,12 +6,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {model: "mylists", key: "id"},
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       playId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {model: "plays", key: "id"},
+        onDelete: 'CASCADE'
       }
     });
   },
