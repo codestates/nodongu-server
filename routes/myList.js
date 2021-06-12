@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const myList = require('../controllers/myList')
 
-app.post('/addplay', myList.addPlay);
-app.get('/getplay', myList.getPlay);
-app.get('/music', myList.music);
-app.get('/auth', myList.auth); // 수정필요.
+router.post('/addMylist', myList.addMylist);
+router.post('/getMylist', myList.getMylist);
+router.post('/addMusic', myList.addMusic);
+router.post('/getMusicList', myList.getMusicList);
