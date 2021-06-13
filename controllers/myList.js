@@ -1,4 +1,3 @@
-// myList CRUD routing
 const { user, mylist, play, playlist } = require("../models")
 
 // module.exports = {
@@ -61,7 +60,7 @@ const { user, mylist, play, playlist } = require("../models")
 //   /*  Client에  mylistId 추가 요청  */
 //   addMusic: async(req, res) => {
     let func = async() => {
-      
+
     }
     func()
 //     const { videoId, title, thumbnail, mylistId } = req.body;
