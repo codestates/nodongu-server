@@ -42,23 +42,20 @@ db.play = require('./play')(sequelize, Sequelize);
 db.playlist = require('./playlist')(sequelize, Sequelize);
 
 /* user : mylist = 1 : N */
-db.user.hasMany(db.mylist);
-db.mylist.belongsTo(db.user, {
-  foreignKey: 'userId',
-  onDelete: 'CASCADE'
-});
-/* mylist : playlist = 1 : N */
-db.mylist.hasMany(db.playlist);
-db.playlist.belongsTo(db.mylist, {
-  foreignKey: 'mylistId', 
-  onDelete: 'CASCADE'
-});
-/* play : playlist = 1 : N */
-db.play.hasMany(db.playlist);
-db.playlist.belongsTo(db.play, {
-  foreignKey: 'playId', 
-  onDelete: 'CASCADE'
-});
+db.user.hasMany(db.mylist, {foreignKey: 'userId'});
+db.mylist.belongsTo(db.user, {foreignKey: 'userId', onDelete: 'CASCADE'});
+
+/* mylist : play = N : M */
+db.mylist.belongsToMany(db.play, {through: 'playlist', foreignKey: 'mylistId'});
+db.play.belongsToMany(db.mylist, {through: 'playlist', foreignKey: 'playId'});
+
+
+// /* play : playlist = 1 : N */
+// db.play.hasMany(db.playlist);
+// db.playlist.belongsTo(db.play, {
+//   foreignKey: 'playId', 
+//   onDelete: 'CASCADE'
+// });
 
 
 module.exports = db;

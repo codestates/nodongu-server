@@ -5,14 +5,14 @@ module.exports = {
       mylistId: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: {model: "mylists", key: "id"},
+        references: { model: "mylists", key: "id" },
         onDelete: 'CASCADE'
       },
       playId: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: {model: "plays", key: "id"},
-        onDelete: 'CASCADE'
+        references: { model: "plays", key: "id" },
+				onDelete: 'CASCADE'
       }
     });
   },
