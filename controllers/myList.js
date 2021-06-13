@@ -1,109 +1,119 @@
-// myList CRUD routing
-const { user, mylist } = require("../models")
+const { user, mylist, play, playlist } = require("../models")
 
-// module.exports = {
-  // getMyList: async (req, res) => {
-    const func = async() => {
-      let find =  await mylist.findAll({
-        where: {userId: 1},// req.body.userId
-        attributes: ['id', 'listTitle', 'createdAt']
-      })
-      // let join = await play.findAll({
-      //   include: 'link_mylist'
-      // });
-      return find;
+module.exports = {
+
+  /*  Client에 userId 추가 요청  */
+  addMyList: async(req, res) => {
+    const { userId, title } = req.body
+    const find = await mylist.findOne({
+      where: { userId: userId },
+      attributes: ['id']
+    })
+      
+    if(find === null) {
+      res.status(404).send({ success: false })
+    } else {
+      mylist.create({
+        listTitle: title, userId: userId
+      }).then(make => {
+        res.status(200).send({ success: true }) 
+      }).catch(err => res.send(err))
     }
-    let find = func()
-    find.then(res => console.log(res))
+  },
+
+  
+  getMyList: async (req, res) => {
+    const find = await mylist.findAll({
+      where: { userId: req.body.userId },
+      attributes: ['id', 'listTitle', 'createdAt']
+    })
     
-//     if(!myList) {
-//       res.status(404).send({ success: false });
-//     } else {
+    if(find.length === 0) {
+      res.status(404).send({ success: false })
+    } else {
+      let data = find.map(el => el.dataValues)
+      res.status(200).send({ success: true, data: data })
+    }
+  },
 
+  
+
+//   getMusicList: async(req, res) => {    
+//     const find = await play.findAll({
+//       attributes: ['musicid', 'title', 'thumbnail'],
+//       include: [{ model: mylist, where: { id: req.body.myListId },
+//         through: { where: { mylistId: req.body.myListId } }
+//       }]
+//     })
+
+//     let data = find.map(el => {
+//       delete el.dataValues.mylists
+//       return el.dataValues;
+//     })
+//     res.status(200).send({ success: true, data: data })
+//   },
+
+
+
+}
+////////////////////////////////////// 테스트 완료 /////////////////////////////////////////////
+
+    
+//     
+//   /*  Client에  mylistId 추가 요청  */
+//   addMusic: async(req, res) => {
+    // let func = async() => {
+
+    // }
+    // func()
+//     const { videoId, title, thumbnail, mylistId } = req.body;
+//     let find = await play.findOne({
+//       where: { musicid: videoId },
+//       attributes: ['id']
+//     })
+
+//     if(find.length === 0) {
+//       await play.create({
+//         musicid: videoId,
+//         title: title,
+//         thumbnail: thumbnail
+//       })
 //     }
-
-//     module.exports = {
-//       get: async (req, res) => {
-//         let allFindurl = await url.findAll();
-//         console.log(allFindurl.every(el => el instanceof url));
-//         console.log("All url:", allFindurl);
-//         res.status(200).send(allFindurl)
-//       },
-//       post: async (req, res) => {
-//         utils.getUrlTitle(req.body.url, async (err, title) => {
-//           console.log(req.body);
-//           let result = await url.create({
-//             url: req.body.url,
-//             title: title
-//           })
-//           res.status(201).send(result)
+    
+//     await playlist.findOne({
+//       where: { playId: find.dataValues.id }
+//     }).then(res => {
+//       if(res.length === 0) {
+//         playlist.create({
+//           mylistId: mylistId,
+//           playId: find.dataValues.id
 //         })
-//       },
-//       redirect: async (req, res) => {
-//         let oneFindurl = await url.findOne({ where: { id: req.params.id } });
-//         url.increment('visits',{where: {id: req.params.id}})
-//         res.status(302).redirect(oneFindurl.url)
 //       }
-//     };
-
-//     if(req.body.email && req.body.password) {
-//           res.status(200).send("Login successfully")
+//     })
+    
+//     .then(find => {
+//       // 조건: play에 없는경우 => play와 playlist에 추가, play에는 있지만, playlist에는 없는 경우 => playlist에 추가/ 둘다 있는 경우 conflict
+//       if(find.length === 0) {
+//         play.create({
+//           musicid: videoId,
+//           title: title,
+//           thumbnail: thumbnail
+//         }).then(make => {
+//           return playlist.create({
+//             mylistId: mylistId,
+//             playId: find.dataValues.id
+//           })
+//         }).then(make => res.status(200).send({ success: true }))  
 //       } else {
-//           res.status(404).send("Step aside!")
-//       } // routing 시험용 코드
-     
-//      // 이메일이 존재하지 않을 때, 비밀번호가 틀렸을 때 각각 다른 404 res 보내줄 것. 
-//      await user.findOne({
-//          where: {
-//              email: req.body.email // e-mail 여부 확인
-//          }
-//      }).then(data => {
-//           if(!data) {
-//               res.status(404).send({loginSuccess: false, message: "존재하지 않는 이메일입니다"}) 
-//           } else {
-//               user.findOne({
-//                   where: {
-//                       password: req.body.password // password 일치여부 확인 
-//                   }
-//               }).then(data => {
-//                   if(!data) {
-//                       res.status(404).send({loginSuccess: false, message: "비밀번호가 일치하지 않습니다"}) 
-//                   } else { // 이메일이 존재하고, password가 일치하는 경우 
-                      
-//                       const accessToken = makeAccessToken(data.dataValues); // 토큰은 다른 모듈에서 생성되서 전달될 예정. 
-//                       const refreshToken = makeRefreshToken(data.dataValues);
-                      
-//                       resRefreshToken(res, refreshToken)  // refreshToken 쿠키에 넣어서 발송 
-//                       res.send({loginSuccess: true, userId: data.dataValues.id, data: {accessToken}}); // accessToken res.body에 넣어서 발송.
-//                   }
-//               })    
-//           }
-//       }).catch(err => {
-//           console.log(err);
-//       }) 
+
+//       }
+//       playlist.findOne({
+//         where: { playId: find.dataValues.id }
+//       }).then(find => {
+//         if(find.length === 0) {
+//           playlist.create({
+
+//           })
+//         }
+//       })
       
-//   },
-
-//   signOut: async (req, res) => {
-      
-//       const accessTokenData = isAuthorized(req); // 토큰 유효성 검증
-
-//       if (accessTokenData) {
-//           res.status(200).send("Logged out successfully")
-      
-//       } else {    
-//           res.status(400).send("you're currently not logined") 
-//       }  
-          
-//           res.status(500).send("error"); // 서버에러 
-//   },
-
-// const getUser = async () => {
-//   return await user.findAll();
-// }
-// let find = getUser()
-// find.then(res => console.log(res))
-
-
-// app.get("/getMyList", myListControllers.getMyList)
-// app.post("/addMyList", myListControllers.addMyList)
