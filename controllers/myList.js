@@ -1,39 +1,42 @@
 const { user, mylist, play, playlist } = require("../models")
 
-// module.exports = {
+module.exports = {
 
-//   getMyList: async (req, res) => {
-//     const find = await mylist.findAll({
-//       where: { userId: req.body.userId },
-//       attributes: ['id', 'listTitle', 'createdAt']
-//     })
-    
-//     if(find.length === 0) {
-//       res.status(404).send({ success: false })
-//     } else {
-//       let data = find.map(el => el.dataValues)
-//       res.status(200).send({ success: true, data: data })
-//     }
-//   },
-
-//   /*  Client에 userId 추가 요청  */
-//   addMyList: async(req, res) => {
-//     const { userId, title } = req.body
-//     const find = await mylist.findOne({
-//       where: { userId: userId },
-//       attributes: ['id']
-//     })
+  /*  Client에 userId 추가 요청  */
+  addMyList: async(req, res) => {
+    const { userId, title } = req.body
+    const find = await mylist.findOne({
+      where: { userId: userId },
+      attributes: ['id']
+    })
       
-//     if(find === null) {
-//       res.status(404).send({ success: false })
-//     } else {
-//       mylist.create({
-//         listTitle: title, userId: userId
-//       }).then(make => {
-//         res.status(200).send({ success: true }) 
-//       }).catch(err => res.send(err))
-//     }
-//   },
+    if(find === null) {
+      res.status(404).send({ success: false })
+    } else {
+      mylist.create({
+        listTitle: title, userId: userId
+      }).then(make => {
+        res.status(200).send({ success: true }) 
+      }).catch(err => res.send(err))
+    }
+  },
+
+  
+  getMyList: async (req, res) => {
+    const find = await mylist.findAll({
+      where: { userId: req.body.userId },
+      attributes: ['id', 'listTitle', 'createdAt']
+    })
+    
+    if(find.length === 0) {
+      res.status(404).send({ success: false })
+    } else {
+      let data = find.map(el => el.dataValues)
+      res.status(200).send({ success: true, data: data })
+    }
+  },
+
+  
 
 //   getMusicList: async(req, res) => {    
 //     const find = await play.findAll({
@@ -52,17 +55,17 @@ const { user, mylist, play, playlist } = require("../models")
 
 
 
-// }
+}
 ////////////////////////////////////// 테스트 완료 /////////////////////////////////////////////
 
     
 //     
 //   /*  Client에  mylistId 추가 요청  */
 //   addMusic: async(req, res) => {
-    let func = async() => {
+    // let func = async() => {
 
-    }
-    func()
+    // }
+    // func()
 //     const { videoId, title, thumbnail, mylistId } = req.body;
 //     let find = await play.findOne({
 //       where: { musicid: videoId },
