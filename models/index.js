@@ -50,12 +50,5 @@ db.mylist.belongsToMany(db.play, {through: 'playlist', foreignKey: 'mylistId'});
 db.play.belongsToMany(db.mylist, {through: 'playlist', foreignKey: 'playId'});
 
 
-// /* play : playlist = 1 : N */
-// db.play.hasMany(db.playlist);
-// db.playlist.belongsTo(db.play, {
-//   foreignKey: 'playId', 
-//   onDelete: 'CASCADE'
-// });
-
 
 module.exports = db;
