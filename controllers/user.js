@@ -1,6 +1,6 @@
 // 회원 CRUD routing
 const express = require('express');
-const {user} = require('../models/user'); // db에서 users table 땡겨오기.
+const {user, mylist, play, playlist} = require('../models'); // db에서 users table 땡겨오기.
 const {
     makeAccessToken,
     makeRefreshToken,
@@ -12,8 +12,24 @@ const {
   } = require('./token/tokenMethod');
 
 
+//   console.log("user: ", user)
+
+//   let checkSignIn = async () => {
+//     await user.findOne({
+//                    where: {
+//                        email: "88parksw@gmail.com" // e-mail 여부 확인
+//                    }
+//                }).then(data => console.log("data: ", data))
+  
+//             }
+
+//     checkSignIn(); // testing용 코드     
+
+
 module.exports = {
     signIn: async (req, res) => {
+
+        // console.log("req.body: ", req.body)
 
         // if(req.body.email && req.body.password) {
         //     res.status(200).send("Login successfully")
@@ -44,7 +60,7 @@ module.exports = {
                        
                         const refreshToken = makeRefreshToken(data.dataValues);
                         resRefreshToken(res, refreshToken)  // refreshToken 쿠키에 넣어서 발송 
-                       
+                       res.status(200).send({loginSuccess:true, userId: data.dataValues.id})
                     }
                 })    
             }
@@ -54,9 +70,11 @@ module.exports = {
         
     },
 
-    signOut: async (req, res) => {
+    signOut: (req, res) => {
         
         const accessTokenData = isAuthorized(req); // 토큰 유효성 검증
+        console.log("accessTokenData: ", accessTokenData) 
+
         if (accessTokenData) {
             res.status(200).send("Logged out successfully")
         } else {    
@@ -138,11 +156,11 @@ module.exports = {
         // db에 해당하는 유저 정보 찾은 뒤 (메일주소)
         // 입력된 정보를 수정한다. sequelize에 수정기능.
 
-        const accessTokenData = isAuthorized(req); // 토큰 해독
-        const {email} = accessTokenData; // 유저정보 확인    
-        // if (!accessTokenData) {
-        //    res.send("토큰이 유효하지 않습니다!"); 
-        // }
+        // const accessTokenData = isAuthorized(req); // 토큰 해독
+        // const {email} = accessTokenData; // 유저정보 확인    
+        // // if (!accessTokenData) {
+        // //    res.send("토큰이 유효하지 않습니다!"); 
+        // // }
 
         // 닉네임 일치여부 확인
         await user.findOne({
@@ -158,9 +176,11 @@ module.exports = {
                     {nickname: req.body.nickname},
                     {image: req.body.image},
                     {password: req.body.password},
-                    {where: email}        
+                    {where: "88parksw@gmail.com"}        
                 ).then(data => {
                     res.status(200).send(data)
+                }).catch(err => {
+                    console.log(err);
                 })
             }
         }).catch(err => {
