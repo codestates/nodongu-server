@@ -12,22 +12,8 @@ const {
   } = require('./token/tokenMethod');
 
 
-//   console.log("user: ", user)
-
-//   let checkSignIn = async () => {
-//     await user.findOne({
-//                    where: {
-//                        email: "88parksw@gmail.com" // e-mail 여부 확인
-//                    }
-//                }).then(data => console.log("data: ", data))
-  
-//             }
-
-//     checkSignIn(); // testing용 코드     
-
-
 module.exports = {
-    signIn: async (req, res) => {
+    login: async (req, res) => {
 
         // console.log("req.body: ", req.body)
 
@@ -70,12 +56,12 @@ module.exports = {
         
     },
 
-    signOut: (req, res) => {
+    logOut: (req, res) => {
         
-        const accessTokenData = isAuthorized(req); // 토큰 유효성 검증
-        console.log("accessTokenData: ", accessTokenData) 
+        const refreshTokenData = isAuthorized(req); // 토큰 유효성 검증
+        console.log("refreshTokenData: ", refreshTokenData) 
 
-        if (accessTokenData) {
+        if (refreshTokenData) {
             res.status(200).send("Logged out successfully")
         } else {    
             res.status(400).send("you're currently not logined") 
@@ -119,42 +105,37 @@ module.exports = {
             }) 
 
         }).catch(err => {
-            console.log(err);
+            res.status(500).send(err);
         })
     },
     
-    getUserInfo: async (req, res) => {
+    userInfo: async (req, res) => {
 
-        const accessTokenData = isAuthorized(req); // JWT 토큰 해독
-        if (!accessTokenData) {
-           res.send("토큰이 유효하지 않습니다!"); 
-        }
+        // const refreshTokenData = isAuthorized(req); // JWT 토큰 해독
+        // if (!refreshTokenData) {
+        //    res.send("토큰이 유효하지 않습니다!"); 
+        // }
 
-        const {email} = accessTokenData;
+        // const {email} = refreshTokenData;
         
         await user.findOne({
-            where: email
+            where: {id: req.body.userId}
         }).then(data => {
             
             if(!data) {
-                res.send("일치하는 유저가 없습니다")
+                res.status(404).send({success: false, data: null})
             }
-            delete data.dataValues.password;
-            res.status(200).send(data)    
 
-        }).catch(err => {
-            console.log(err);
+            delete data.dataValues.password;
+            res.status(200).send({success: true, data: data.dataValues})    
+
+        }).catch(err => { //핸들링된 에러를 그대로 넘겨줄 것.
+            res.status(400).send({error: err});
         })
 
-        res.status(500).send("error");
     }, 
     
-    modifyInfo: async (req, res) => {
-
-        // 로그인 상태인지 확인
-        // 바디로 nickname, image, password 확인
-        // db에 해당하는 유저 정보 찾은 뒤 (메일주소)
-        // 입력된 정보를 수정한다. sequelize에 수정기능.
+    modify: async (req, res) => {
 
         // const accessTokenData = isAuthorized(req); // 토큰 해독
         // const {email} = accessTokenData; // 유저정보 확인    
@@ -162,33 +143,78 @@ module.exports = {
         // //    res.send("토큰이 유효하지 않습니다!"); 
         // // }
 
-        // 닉네임 일치여부 확인
-        await user.findOne({
+        await user.findOne({ // 닉네임 겹치는 지 확인.
+            where: {nickname: req.body.nickname}
+        })
+        .then(exsitedData => {
+            
+            if (exsitedData) { // 이미 존재하는 닉네임일 경우, 
+                return res.status(409).send("Is the nickname that already exists.")
+            }
+            
+            user.update({
+                nickname: req.body.nickname,
+                image: req.body.image,
+                password: req.body.password
+            },
+            {
+                where: {id: req.body.userId}
+            }) // output은 [1] 
+            .then(data1 => {
+                
+                user.findOne({
+                    where: {
+                        id: req.body.userId
+                    }
+                })
+                .then(data2 => res.status(200).send(data2.dataValues))    
+            
+            })            
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        })   
+              
+    },
+     
+    deleteUser: async (req,res) => {
+
+        await user.findOne({ // userId와 일치하는 레코드가 있는지 확인.
             where: {
-                nickname: req.body.nickname
+                id: req.body.userId 
             }
         }).then(data => {
+   
+            if(!data) { // 일치하는 레코드가 없을 경우, 
+                res.status(404).send({success:false})
+            } 
+            user.destroy({ // 일치하는 레코드가 있을 경우, 전부 삭제
+                where: {id: req.body.userId}    
+
+            }).then(data => { 
+                res.status(200).send({success:true})
+
+            }).catch(err => {
+                console.log(err); // 핸들링된 에러를 넘겨 줄것. 
+            })
+        })
+    },
+
+    existEmail: async (req, res) => {
+       
+        await user.findOne({
+            where: {
+                email: req.body.email // e-mail 여부 확인
+            }
+        })
+        .then(data => {
             
             if(data) {
-                res.status(409).send("Is the nickname that already exists.")
-            } else {
-                user.update(
-                    {nickname: req.body.nickname},
-                    {image: req.body.image},
-                    {password: req.body.password},
-                    {where: "88parksw@gmail.com"}        
-                ).then(data => {
-                    res.status(200).send(data)
-                }).catch(err => {
-                    console.log(err);
-                })
+                res.status(404).send({result:true})
             }
-        }).catch(err => {
-            console.log(err);
+
+            res.status(200).send({result:false})
         })
 
-        res.status(500).send("error");
-        
     }
-
 }
