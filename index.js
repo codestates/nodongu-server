@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 80;
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -33,6 +33,7 @@ app.use(cors({
 
 app.use('/nod/user', userRouter); 
 app.use('/nod', myListRouter);
+
 
 app.listen(port, () => {
   console.log(`서버테스트 포트 ${port}`)
