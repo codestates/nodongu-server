@@ -7,7 +7,7 @@ module.exports = {
         const { userId, title } = req.body     
         const find = await mylist.findOne({
             where: { userId: userId },
-            attributes: ['id']
+            attributes: ['id', 'listTitle']
         });      
 
         if(find === null) {
@@ -42,7 +42,7 @@ module.exports = {
             let data = [];
             find.forEach(el => {
                 let obj = el.dataValues;
-                obj.thumbnails = el.dataValues.plays.map(el => el.thumbnail);
+                obj.thumbnails = el.dataValues.plays.slice(0, 4).map(el => el.thumbnail)
                 delete obj.plays;
                 data.push(obj);
             });
@@ -50,4 +50,3 @@ module.exports = {
         }
     }
 }
- 
