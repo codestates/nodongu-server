@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const userRouter = require('./routes/user.js');
-// const myListRouter = require('./routes/myList.js');
+const myListRouter = require('./routes/myList.js');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -32,7 +32,7 @@ app.use(cors({
 // app.get('/userinfo', user.getUserInfo); //testing code
 
 app.use('/nod/user', userRouter); 
-// app.use('/nod', myListRouter); // mylist에 라우팅 함수가 작성되지 않아 계속 오류 뿜뿜
+app.use('/nod', myListRouter);
 
 app.listen(port, () => {
   console.log(`서버테스트 포트 ${port}`)
