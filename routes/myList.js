@@ -7,3 +7,5 @@ router.post('/addMylist', myList.addMylist);
 router.post('/getMylist', myList.getMylist);
 router.post('/getMusicList', play.getMusicList);
 router.post('/addMusic', play.addMusic);
+
+module.exports = router;

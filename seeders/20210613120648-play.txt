@@ -1,0 +1,46 @@
+// play
+'use strict';
+
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    return queryInterface.bulkInsert('plays', [
+      {
+        musicid: '5qap5aO4i9A',
+        title: 'lofi hip hop radio - beats to relax/study to',
+        thumbnail: 'https://i.ytimg.com/vi/5qap5aO4i9A/hqdefault_live.jpg',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        musicid: 'cbuZfY2S2UQ',
+        title: '[ 𝑷𝒍𝒂𝒚𝒍𝒊𝒔𝒕 ]  코딩할때 듣기 좋은 노래 • lofi type beat • 3 hours',
+        thumbnail: 'https://i.ytimg.com/vi/cbuZfY2S2UQ/hqdefault.jpg',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        musicid: 't6JZnMNN6c8',
+        title: 'Shaam ki chai, sunset aur tum 🌆 Indian Lofi &amp; aesthetic songs to relax, chill, think or study 💜',
+        thumbnail: 'https://i.ytimg.com/vi/t6JZnMNN6c8/hqdefault_live.jpg',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        musicid: 'XgKLG3cafPk',
+        title: 'Nhạc Lofi 2021 - Những Bản Lofi Mix Chill Nhẹ Nhàng Cực Hay - Nhạc Trẻ Lofi Gây Nghiện Hay Nhất',
+        thumbnail: 'https://i.ytimg.com/vi/XgKLG3cafPk/hqdefault.jpg',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+    ]);
+  },
+
+  down: async (queryInterface, Sequelize) => {
+    /**
+     * Add commands to revert seed here.
+     *
+     * Example:
+     * await queryInterface.bulkDelete('People', null, {});
+     */
+  }
+};
