@@ -11,49 +11,51 @@ module.exports = {
         through: { where: { mylistId: req.body.myListId } }
       }]
     })
-    
+
     let data = find.map(el => {
       delete el.dataValues.mylists
       return el.dataValues;
-    })
+    });
+
     res.status(200).send({ success: true, data: data })
   },
 
   
-  addMusic: async(req, res) => {
-    const { videoId, title, thumbnail, mylistId } = req.body
-    const find = await play.findOne({
-      where: { musicid: videoId },
-      attributes: ['id'],
-      include: [{
-        model: mylist,
-        attributes: ['id'],
-        through: { where: { mylistId: mylistId } }
-      }]
-    });
-    const playId = find.dataValues.id;
-    const myListId = find.mylists[0];
-      
-    if(find === null) {
-      play.create({
-        musicid: videoId,
-        title: title,
-        thumbnail: thumbnail
-      }).then(make => {
-        playlist.create({
-          mylistId: mylistId,
-          playId: make.dataValues.id
-        }).then(make => res.status(200).send({ success: true }))
-      })
+    addMusic: async(req, res) => {
+        const { videoId, title, thumbnail, mylistId } = req.body
+        const find = await play.findOne({
+            where: { musicid: videoId },
+            attributes: ['id'],
+            include: [{
+                model: mylist,
+                attributes: ['id'],
+                through: { where: { mylistId: mylistId } }
+            }]
+        });
 
-    } else if(myListId === undefined) {
-      playlist.create({
-        mylistId: mylistId,
-        playId: playId
-      }).then(make => res.status(200).send({ success: true }))
-    } else {
-      res.status(409).send({ success: false })
-    }   
+      const playId = find.dataValues.id;
+      const myListId = find.mylists[0];
+      
+        if(find === null) {
+            play.create({
+                musicid: videoId,
+                title: title,
+                thumbnail: thumbnail
+            }).then(make => {
+                playlist.create({
+                    mylistId: mylistId,
+                    playId: make.dataValues.id
+                }).then(make => res.status(200).send({ success: true }))
+            })
+
+      } else if(myListId === undefined) {
+          playlist.create({
+              mylistId: mylistId,
+              playId: playId
+          }).then(make => res.status(200).send({ success: true }))
+      } else {
+          res.status(409).send({ success: false })
+      }   
   }
 
 }
