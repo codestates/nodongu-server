@@ -3,7 +3,7 @@ const { user, mylist, play, playlist } = require("../models")
 module.exports = {
   
     addMyList: async(req, res) => {
-
+        console.log(req.body)
         const { userId, title } = req.body     
         const find = await mylist.findOne({
             where: { userId: userId },

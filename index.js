@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 80;
+const port = 3000;
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');

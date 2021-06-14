@@ -22,19 +22,16 @@ module.exports = {
 
   
     addMusic: async(req, res) => {
-        const { videoId, title, thumbnail, mylistId } = req.body
+        const { videoId, title, thumbnail, myListId } = req.body
         const find = await play.findOne({
             where: { musicid: videoId },
             attributes: ['id'],
             include: [{
                 model: mylist,
                 attributes: ['id'],
-                through: { where: { mylistId: mylistId } }
+                through: { where: { mylistId: myListId } }
             }]
         });
-
-      const playId = find.dataValues.id;
-      const myListId = find.mylists[0];
       
         if(find === null) {
             play.create({
@@ -43,21 +40,26 @@ module.exports = {
                 thumbnail: thumbnail
             }).then(make => {
                 playlist.create({
-                    mylistId: mylistId,
+                    mylistId: myListId,
                     playId: make.dataValues.id
                 }).then(make => res.status(200).send({ success: true }))
             })
 
-      } else if(myListId === undefined) {
+      } else {
+        const playId = find.dataValues.id;
+        const mylistId = find.mylists[0];
+
+        if(mylistId === undefined) {
           playlist.create({
-              mylistId: mylistId,
+              mylistId: myListId,
               playId: playId
           }).then(make => res.status(200).send({ success: true }))
-      } else {
-          res.status(409).send({ success: false })
-      }   
-  }
 
+        } else {
+          res.status(409).send({ success: false })
+        } 
+      }  
+  }
 }
 
 
