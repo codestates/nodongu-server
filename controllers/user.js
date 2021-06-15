@@ -44,8 +44,8 @@ module.exports = {
                         // const accessToken = makeAccessToken(data.dataValues); // 토큰은 다른 모듈에서 생성되서 전달될 예정. 
                          // res.send({loginSuccess: true, userId: data.dataValues.id, data: {accessToken}}); // accessToken res.body에 넣어서 발송.
                        
-                        const refreshToken = makeRefreshToken(data.dataValues);
-                        resRefreshToken(res, refreshToken)  // refreshToken 쿠키에 넣어서 발송 
+                        // const refreshToken = makeRefreshToken(data.dataValues);
+                        // resRefreshToken(res, refreshToken)  // refreshToken 쿠키에 넣어서 발송 
                        res.status(200).send({loginSuccess:true, userId: data.dataValues.id})
                     }
                 })    
