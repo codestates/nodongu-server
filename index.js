@@ -25,7 +25,7 @@ app.use(cors({
 // })
 
 app.use('/nod/user', userRouter); 
-app.use('/nod', myListRouter); 
+app.use('/nod', myListRouter);
 
 app.listen(port, () => {
   console.log(`서버테스트 포트 ${port}`)
