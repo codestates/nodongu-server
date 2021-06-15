@@ -24,13 +24,6 @@ app.use(cors({
 //   res.send('hello world!')
 // })
 
-// console.log('user: ', user )
-// app.post('/nod/user/login', user.signIn);
-// app.post('/signup', user.signUp);
-// app.post('/logout', user.signOut);
-// app.post('/modify', user.modifyInfo);
-// app.get('/userinfo', user.getUserInfo); //testing code
-
 app.use('/nod/user', userRouter); 
 app.use('/nod', myListRouter);
 

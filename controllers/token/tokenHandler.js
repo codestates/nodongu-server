@@ -1,5 +1,6 @@
 const {authRefeshToken, makeAccessToken, reissueAccessToken, isAuthorized} = require('./tokenMethod')
 const {user} = require('../../models')
+require("dotenv").config();
 
 module.export = {
     // accessTokenHandler: async (res, req) => {
@@ -37,7 +38,7 @@ module.export = {
         } // refresh token있으나 유효성 검증 실패.
 
         const {email} = refreshTokenData;
-        user.findOne({where: {email}})
+        await user.findOne({where: {email}})
         .then(data => {
             
             if(!data) {

@@ -1,7 +1,7 @@
 const express = require('express');
 const {user} = require('../models/user');
 const axios = require('axios'); 
-
+require("dotenv").config();
 /*
 // 클라이언트에서 보내준 api와 검색어를 활용하여 원하는 데이터에 쏴주는 기능.
 // 1. 클라이언트 단에서 body parameter로 keyword 가져옴 // 키워드 조합을 생각해보자 => 알고리즘과 유사하게 구현가능.
@@ -12,26 +12,21 @@ const axios = require('axios');
 // 6. 키워드 가공에 대해서 좀더 생각해보기 
 */
 
-
-module.exports = (res, req) => {  
-
-    axios
-        .post(`https://www.googleapis.com/youtube/v3/search?part=snippet&key=AIzaSyCqab7Lpnauyr9U6JZ-XhP1qkKwZZrKZiQ&q=${req.body.keyword}&type=video&videoEmbeddable=true`)
-        // { 'Content-Type': 'application/json', withCredentials: true } 요 옵션을 좀 더 파보자.
-        .then(data => {
-            
+module.exports = {  
+    getYoutubeList: async (req, res) => {
+        
+        await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&key=${process.env.API_KEY}&q=${req.body.keyword}lofi&type=video&videoEmbeddable=true&maxResults=15`)
+        .then(data => {     
             let newMusicList = [];
-            data.map((ele) => {
+            data.data.items.map((ele) => {
                 let obj = {}
                 obj.musicId = ele.id.videoId
-                obj.title = ele.title
+                obj.title = ele.snippet.title
                 obj.thumbnail = ele.snippet.thumbnails.high.url
                 newMusicList.push(obj)
             }) // list 가공 logic
-        
             res.status(200).send({success: true, data: newMusicList})
-
-        }).catch(err => console.log(err))
-    
-    res.status(500).send("error"); // 서버에러     
+ 
+        })
+    }     
 }

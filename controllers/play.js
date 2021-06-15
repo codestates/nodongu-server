@@ -61,8 +61,3 @@ module.exports = {
 }
 
 
-
-
-/*  Client에  mylistId 추가 요청, api요청 실패 409 변환  */
-// 조건: play에 없는경우 => play와 playlist에 추가, play에는 있지만, playlist에는 없는 경우 => playlist에 추가/ 둘다 있는 경우 conflict
-
