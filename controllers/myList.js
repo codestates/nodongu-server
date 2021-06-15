@@ -3,19 +3,19 @@ const { user, mylist, play, playlist } = require("../models")
 module.exports = {
   
     addMyList: async(req, res) => {
-        console.log(req.body)
+
         const { userId, title } = req.body     
-        const find = await mylist.findOne({
-            where: { userId: userId },
+        const find = await mylist.findAll({
+            where: { userId: userId, listTitle: title },
             attributes: ['id', 'listTitle']
         });      
 
-        if(find === null) {
-            res.status(404).send({ success: false })
+        if(find.length !== 0) {
+            res.status(409).send({ success: false })
         
         } else {
             mylist.create({
-                listTitle: title, userId: userId
+                userId: userId, listTitle: title
             }).then(make => {
                 res.status(200).send({ success: true }) 
             }).catch(err => res.send(err))

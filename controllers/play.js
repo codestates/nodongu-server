@@ -30,7 +30,7 @@ module.exports = {
             attributes: ['id'],
             include: [{
                 model: mylist,
-                attributes: ['id'],
+                attributes: ['id', 'userId'],
                 through: { where: { mylistId: myListId } }
             }]
         });
