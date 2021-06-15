@@ -12,7 +12,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false })); 
 app.use(cors({
-  origin: "*",
+  origin: "127.0.0.1",
   methods: ["GET, POST, OPTIONS"],
   credentials: true,
   preflightContinue: true

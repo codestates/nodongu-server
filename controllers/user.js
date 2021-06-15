@@ -20,17 +20,17 @@ module.exports = {
         // if(req.body.email && req.body.password) {
         //     res.status(200).send("Login successfully")
         // } else {
-        //     res.status(404).send("Step aside!")
+        //     res.status(202).send("Step aside!")
         // } // routing 시험용 코드
        
-       // 이메일이 존재하지 않을 때, 비밀번호가 틀렸을 때 각각 다른 404 res 보내줄 것. 
+       // 이메일이 존재하지 않을 때, 비밀번호가 틀렸을 때 각각 다른 202 res 보내줄 것. 
        await user.findOne({
            where: {
                email: req.body.email // e-mail 여부 확인
            }
        }).then(data => {
             if(!data) {
-                res.status(404).send({loginSuccess: false, message: "존재하지 않는 이메일입니다"}) 
+                res.status(202).send({loginSuccess: false, message: "존재하지 않는 이메일입니다"}) 
             } else {
                 user.findOne({
                     where: {
@@ -38,7 +38,7 @@ module.exports = {
                     }
                 }).then(data => {
                     if(!data) {
-                        res.status(404).send({loginSuccess: false, message: "비밀번호가 일치하지 않습니다"}) 
+                        res.status(202).send({loginSuccess: false, message: "비밀번호가 일치하지 않습니다"}) 
                     } else { // 이메일이 존재하고, password가 일치하는 경우 
                         
                         // const accessToken = makeAccessToken(data.dataValues); // 토큰은 다른 모듈에서 생성되서 전달될 예정. 
@@ -46,7 +46,7 @@ module.exports = {
                        
                         const refreshToken = makeRefreshToken(data.dataValues);
                         resRefreshToken(res, refreshToken)  // refreshToken 쿠키에 넣어서 발송 
-                       res.status(200).send({loginSuccess:true, userId: data.dataValues.id})
+                        res.status(200).send({loginSuccess:true, userId: data.dataValues.id})
                     }
                 })    
             }
@@ -64,9 +64,10 @@ module.exports = {
         if (refreshTokenData) {
             res.status(200).send("Logged out successfully")
         } else {    
-            res.status(400).send("you're currently not logined") 
+            res.status(202).send("you're currently not logined") 
         }  
             res.status(500).send("error"); // 서버에러 
+        
     },
 
 
@@ -75,7 +76,7 @@ module.exports = {
         // if (req.body.email && req.body.password && req.body.nickname) {
         //     res.status(200).send("Welcome to NodongU world!")
         // } else {
-        //     res.status(404).send("Not enough informations!")
+        //     res.status(202).send("Not enough informations!")
         // } // routing 시험용 코드
         // 닉네임 중복여부 구현
         
@@ -84,7 +85,7 @@ module.exports = {
         }).then(existedEmail => {
             
             if (existedEmail) { // db에 email이 이미 존재할 경우, 400 status와 에러메세지 뿜뿜
-                res.status(409).send("Is the email that already exists.")
+                res.status(202).send("Is the email that already exists.")
             } 
 
             user.findOne({ // db에 nickname 존재하는지 체크
@@ -92,7 +93,7 @@ module.exports = {
             }).then(existedNickname => {
 
                 if(existedNickname) {
-                    res.status(409).send("Is the nickname that already exists.")
+                    res.status(202).send("Is the nickname that already exists.")
                 }
 
                  // db에 회원정보가 없으니 정상적으로 회원가입 진행/ 
@@ -123,14 +124,14 @@ module.exports = {
         }).then(data => {
             
             if(!data) {
-                res.status(404).send({success: false, data: null})
+                res.status(202).send({success: false, data: null})
             }
 
             delete data.dataValues.password;
             res.status(200).send({success: true, data: data.dataValues})    
 
         }).catch(err => { //핸들링된 에러를 그대로 넘겨줄 것.
-            res.status(400).send({error: err});
+            res.status(202).send({error: err});
         })
 
     }, 
@@ -149,7 +150,7 @@ module.exports = {
         .then(exsitedData => {
             
             if (exsitedData) { // 이미 존재하는 닉네임일 경우, 
-                return res.status(409).send("Is the nickname that already exists.")
+                return res.status(202).send("Is the nickname that already exists.")
             }
             
             user.update({
@@ -186,7 +187,7 @@ module.exports = {
         }).then(data => {
    
             if(!data) { // 일치하는 레코드가 없을 경우, 
-                res.status(404).send({success:false})
+                res.status(202).send({success:false})
             } 
             user.destroy({ // 일치하는 레코드가 있을 경우, 전부 삭제
                 where: {id: req.body.userId}    
@@ -210,9 +211,25 @@ module.exports = {
         .then(data => {
             
             if(data) {
-                res.status(404).send({result:true})
+                res.status(202).send({result:true})
             }
+            res.status(200).send({result:false})
+        })
 
+    },
+
+    existNickname: async (req, res) => {
+       
+        await user.findOne({
+            where: {
+                nickname: req.body.nickname // nickname 여부 확인
+            }
+        })
+        .then(data => {
+            
+            if(data) {
+                res.status(202).send({result:true})
+            }
             res.status(200).send({result:false})
         })
 
