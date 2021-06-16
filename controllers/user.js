@@ -137,48 +137,88 @@ module.exports = {
         })
 
     }, 
-    
-    modify: async (req, res) => {
 
-        // const accessTokenData = isAuthorized(req); // 토큰 해독
-        // const {email} = accessTokenData; // 유저정보 확인    
-        // // if (!accessTokenData) {
-        // //    res.send("토큰이 유효하지 않습니다!"); 
-        // // }
+    modNickname: async (req, res) => {
 
-        await user.findOne({ // 닉네임 겹치는 지 확인.
-            where: {nickname: req.body.nickname}
-        })
-        .then(exsitedData => {
-            
-            if (exsitedData) { // 이미 존재하는 닉네임일 경우, 
-                return res.status(202).send("Is the nickname that already exists.")
+        await user.findOne({
+            where: {
+                id: req.body.userId
             }
-            
+        })
+        .then(data1 => {
+
+            if(!data1) {
+                return res.status(202).send({success: false}) // status 204 출력이 안되는 오류. 
+            }
+
             user.update({
-                nickname: req.body.nickname,
-                image: req.body.image,
+                nickname: req.body.nickname
+            },
+            {
+                where: {id: req.body.userId}
+            })
+            .then(data2 => res.status(200).send({success: true}) )
+
+        }).catch(err => {
+            res.status(500).send(err);
+        })  
+
+    },
+
+    modImage: async (req, res) => { // Image data handling은 대기.
+
+        await user.findOne({
+            where: {
+                id: req.body.userId
+            }
+        })
+        .then(data1 => {
+
+            if(!data1) {
+                return res.status(202).send({success: false})
+            }
+
+            user.update({
+                image: req.body.image
+            },
+            {
+                where: {id: req.body.userId}
+            })
+            .then(data2 => res.status(200).send({success: true}) )
+
+        }).catch(err => {
+            res.status(500).send(err);
+        }) 
+
+    },
+    
+    modPassword: async (req, res) => {
+
+        await user.findOne({
+            where: {
+                id: req.body.userId
+            }
+        })
+        .then(data1 => {
+
+            if(!data1) {
+                return res.status(202).send({success: false}) 
+            }
+
+            user.update({
                 password: req.body.password
             },
             {
                 where: {id: req.body.userId}
-            }) // output은 [1] 
-            .then(data1 => {
-                
-                user.findOne({
-                    where: {
-                        id: req.body.userId
-                    }
-                })
-                .then(data2 => res.status(200).send(data2.dataValues))    
-            
-            })            
-        })
-        .catch(err => {
+            })
+            .then(data2 => res.status(200).send({success: true}) )
+
+        }).catch(err => {
             res.status(500).send(err);
-        })   
-              
+        }) 
+
     },
+
      
     deleteUser: async (req,res) => {
 
