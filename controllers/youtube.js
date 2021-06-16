@@ -1,26 +1,26 @@
 const express = require('express');
-const {user} = require('../models/user');
 const axios = require('axios'); 
 require("dotenv").config();
 
 
-module.exports = {  
-    getYoutubeList: async (req, res) => {
-        
-        await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&key=${process.env.API_KEY}&q=${req.body.keyword}lofi&type=video&videoEmbeddable=true&maxResults=15`)
-        .then(data => {
-            
-            console.log("data: ", data.data)
-            let newMusicList = [];
-            data.data.items.map((ele) => {
-                let obj = {}
-                obj.musicId = ele.id.videoId
-                obj.title = ele.snippet.title
-                obj.thumbnail = ele.snippet.thumbnails.high.url
-                newMusicList.push(obj)
-            }) // list 가공 logic
-            res.status(200).send({success: true, data: newMusicList})
- 
-        })
-    }     
-}
+module.exports = { 
+
+    getYoutubeList : async (req, res) => {
+        const result = [];
+        const keywordConverter = encodeURI(req.body.keyword)
+        const data1 = await axios.get(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${process.env.API_KEY}&q=${keywordConverter}lofi&type=video&videoEmbeddable=true&maxResults=15`
+        );
+      
+        for (let data2 of data1.data.items) {
+          const data = await axios.get(
+            `https://www.googleapis.com/youtube/v3/videos?id=${data2.id.videoId}&key=${process.env.API_KEY}&type=video&part=contentDetails`
+          );
+          const duration = data.data.items[0].contentDetails.duration;
+          result.push({ id: data2.id.videoId, title: data2.snippet.title, thumbnail: data2.snippet.thumbnails.high, duration});
+        }
+      
+        res.status(200).send({success: true, data: result})
+    }
+
+} 
