@@ -9,7 +9,7 @@ module.exports = {
 
         const refreshToken = req.headers.cookie;
 
-        // console.log("refreshToken: ", refreshToken) // refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJsaXNrZUBuYXZlci5jb20iLCJuaWNrbmFtZSI6InlhbmdhY2hpbm5pa292YSIsInBhc3N3b3JkIjoicGFzc3dvcmQxIiwiaW1hZ2UiOnsidHlwZSI6IkJ1ZmZlciIsImRhdGEiOltdfSwiY3JlYXRlZEF0IjoiMjAyMS0wNi0xM1QxMjo1MTo1OC4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMS0wNi0xNFQwNjoyMzo1MS4wMDBaIiwiaWF0IjoxNjIzNzU5NTc5LCJleHAiOjE2MjQzNjQzNzl9.p1Jg0cuxKyBy_yvZ60CUSZLVRlzCxFirz2EfpfMh4W4
+        // console.log("refreshToken: ", refreshToken) // refreshToken=xxxx.xxxx.xxxx
 
         if(!refreshToken) {
             res.status(202).send("Unauthorized")
@@ -18,7 +18,8 @@ module.exports = {
         const token = refreshToken.split("=")[1];    
         const decoding = verify(token, process.env.REFRESH_SALT);
 
-        console.log("decoding: ", decoding) //
+        console.log("decoding: ", decoding) 
+        // JsonWebTokenError: invalid token => 로직추가.
 
         const {email} = decoding;
 
