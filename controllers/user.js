@@ -40,36 +40,27 @@ module.exports = {
                     if(!data) {
                         res.status(202).send({loginSuccess: false, message: "비밀번호가 일치하지 않습니다"}) 
                     } else { // 이메일이 존재하고, password가 일치하는 경우 
-                        
-                        // const accessToken = makeAccessToken(data.dataValues); // 토큰은 다른 모듈에서 생성되서 전달될 예정. 
-                         // res.send({loginSuccess: true, userId: data.dataValues.id, data: {accessToken}}); // accessToken res.body에 넣어서 발송.
-                       
 
-                        const refreshToken = makeRefreshToken(data.dataValues);
-                        resRefreshToken(res, refreshToken)  // refreshToken 쿠키에 넣어서 발송 
-                        res.status(200).send({loginSuccess:true, userId: data.dataValues.id})
+                         const refreshToken = makeRefreshToken(data.dataValues);
+                         res
+                             .status(200)
+                             .set('Access-Control-Expose-Headers', 'authorization')
+                             .set('authorization', `Bearer ${refreshToken}`)
+                             .send({loginSuccess:true, userId: data.dataValues.id});
                       
                     }
                 })    
             }
         }).catch(err => {
-            console.log(err);
+            res.status(500).send("error");
         }) 
         
     },
 
-    logOut: (req, res) => {
-  
-        const refreshTokenData = isAuthorized(req); // 토큰 유효성 검증
-        console.log("refreshTokenData: ", refreshTokenData) 
+    logout: (req, res) => {
 
-        if (refreshTokenData) {
-            res.status(200).send("Logged out successfully")
-        } else {    
-            res.status(202).send("you're currently not logined") 
-        }  
-            res.status(500).send("error"); // 서버에러 
-        
+        res.status(200).send("Logged out successfully")
+        // res.status(500).send("error"); // 서버 에러 
     },
 
 
@@ -147,16 +138,16 @@ module.exports = {
         }).then(data => {
    
             if(!data) { // 일치하는 레코드가 없을 경우, 
-                res.status(202).send({success:false})
+                return res.status(202).send({success:false})
             } 
             user.destroy({ // 일치하는 레코드가 있을 경우, 전부 삭제
                 where: {id: req.body.userId}    
 
             }).then(data => { 
-                res.status(200).send({success:true})
+                return res.status(200).send({success:true})
 
             }).catch(err => {
-                console.log(err); // 핸들링된 에러를 넘겨 줄것. 
+                res.status(400).send(err); // 핸들링된 에러를 넘겨 줄것. 
             })
         })
     },
