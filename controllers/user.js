@@ -34,7 +34,8 @@ module.exports = {
             } else {
                 user.findOne({
                     where: {
-                        password: req.body.password // password 일치여부 확인 
+                        password: req.body.password, // password 일치여부 확인 
+                        email: req.body.email
                     }
                 }).then(data => {
                     if(!data) {

@@ -10,7 +10,7 @@ module.exports = {
         const authorization = req.headers.authorization;
         const token = authorization.split(" ")[1];
         const decoding = verify(token, process.env.REFRESH_SALT);
-        const {email,nickname,id,image,createdAt} = decoding;
+        const {email} = decoding;
 
         // console.log("refreshToken: ", refreshToken) // refreshToken=xxxx.xxxx.xxxx
 
@@ -23,11 +23,18 @@ module.exports = {
                 if(!data) {
                     return res.status(202).send("Unauthorized")
                 }
-                res.status(200).send({"success": true, userInfo: {email, nickname, id, image, createdAt}})
-                
+                res.status(200).send({"success": true, 
+                userInfo: {
+                    email: data.dataValues.email,
+                    nickname: data.dataValues.nickname,
+                    id:data.dataValues.id,
+                    image:data.dataValues.image,
+                    createdAt:data.dataValues.createdAt
+                }})
             }).catch(err => {
                 res.status(202).send(err)
-            } )
+            })
+            
     }
 
 }
