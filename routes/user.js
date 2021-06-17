@@ -6,7 +6,7 @@ const auth = require('../controllers/token/tokenHandler.js')
 
 router.post('/login', user.login);
 router.post('/signup', user.signUp);
-router.post('/signOut', user.logOut);
+router.post('/logout', user.logout);
 router.post('/deleteUser', user.deleteUser);
 router.post('/userinfo', user.userInfo);
 router.post('/existEmail', user.existEmail);

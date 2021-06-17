@@ -58,7 +58,7 @@ module.exports = {
                 }).then(make => res.status(200).send({ success: true }))
 
             } else {
-                res.status(409).send({ success: false })
+                res.status(202).send({ success: false })
             } 
         }  
     }

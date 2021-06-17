@@ -7,30 +7,27 @@ require("dotenv").config();
 module.exports = {
     refreshTokenHandler: async (req, res) => {
 
-        const refreshToken = req.headers.cookie;
+        const authorization = req.headers.authorization;
+        const token = authorization.split(" ")[1];
+        const decoding = verify(token, process.env.REFRESH_SALT);
+        const {email,nickname,image,createdAt} = decoding;
 
         // console.log("refreshToken: ", refreshToken) // refreshToken=xxxx.xxxx.xxxx
 
-        if(!refreshToken) {
-            res.status(202).send("Unauthorized")
-        } // refresh token이 없는 경우,
-
-        const token = refreshToken.split("=")[1];    
-        const decoding = verify(token, process.env.REFRESH_SALT);
-
-        console.log("decoding: ", decoding) 
-        // JsonWebTokenError: invalid token => 로직추가.
-
-        const {email} = decoding;
+        if(!authorization) {
+            res.status(202).send({"success": false})
+        }
 
         await user.findOne({where: {email}})
             .then(data => {
                 if(!data) {
-                    res.status(202).send("Unauthorized")
+                    return res.status(202).send("Unauthorized")
                 }
-                res.status(200).send({message: "OK"})
+                res.status(200).send({"success": true, userInfo: {email, nickname, image, createdAt}})
                 
-    })     
+            }).catch(err => {
+                res.status(202).send(err)
+            } )
     }
 
 }

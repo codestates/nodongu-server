@@ -11,7 +11,7 @@ module.exports = {
         });      
 
         if(find.length !== 0) {
-            res.status(409).send({ success: false })
+            res.status(202).send({ success: false })
         
         } else {
             mylist.create({
@@ -36,12 +36,13 @@ module.exports = {
         });
 
         if(find.length === 0) {
-            res.status(404).send({ success: false })
+            res.status(202).send({ success: false })
 
         } else {
             let data = [];
             find.forEach(el => {
                 let obj = el.dataValues;
+                obj.count = el.dataValues.plays.length;
                 obj.thumbnails = el.dataValues.plays.slice(0, 4).map(el => el.thumbnail)
                 delete obj.plays;
                 data.push(obj);
