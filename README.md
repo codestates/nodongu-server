@@ -45,9 +45,16 @@ NodongU를 통해 당신의 작업 생산성을 극대화시켜보세요! 😍
 
 ### 🌐 **Architecture**
 
+>3tier
+
 ![archi](https://user-images.githubusercontent.com/75276357/122400067-53b06a00-cfb6-11eb-97c6-82fa10b10722.jpg)    
 
-![Untitled (3)](https://user-images.githubusercontent.com/75276357/122400274-8a868000-cfb6-11eb-9821-8bce307709df.png)
+<br/>
+
+>Deploy
+
+![Deploy3](https://user-images.githubusercontent.com/75276357/122401039-33cd7600-cfb7-11eb-9e40-6a7d162c4f9b.png)
+
 
 <br/>
 
