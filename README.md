@@ -45,9 +45,11 @@ NodongU를 통해 당신의 작업 생산성을 극대화시켜보세요! 😍
 
 ### 🌐 **Architecture**
 
-![배포](https://user-images.githubusercontent.com/75276357/122399615-eac8f200-cfb5-11eb-8c58-99cbf8742c9a.png)
+![archi](https://user-images.githubusercontent.com/75276357/122400067-53b06a00-cfb6-11eb-97c6-82fa10b10722.jpg)    ![배포](https://user-images.githubusercontent.com/75276357/122399615-eac8f200-cfb5-11eb-8c58-99cbf8742c9a.png) 
 
 
+
+<br/>
 
 # 🐱 **Team CoCo**
 ### **Memeber**
