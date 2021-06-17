@@ -42,6 +42,7 @@ NodongU를 통해 당신의 작업 생산성을 극대화시켜보세요! 😍
 
 ![Server](https://user-images.githubusercontent.com/75276357/122399537-d97fe580-cfb5-11eb-9503-a0765acad3f8.jpg)
 
+<br/>
 
 ### 🌐 **Architecture**
 
