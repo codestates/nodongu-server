@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     thumbnail: {
       type: DataTypes.STRING(80),
+    },
+    duration: {
+      type: DataTypes.STRING(80),
     }
   });
 };
