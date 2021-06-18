@@ -19,7 +19,7 @@
 NodongU를 통해 당신의 작업 생산성을 극대화시켜보세요! 😍
 
 
-### [💁  **Work with NodongU**  ](https://d38bm72giovqxz.cloudfront.net./)
+### [💁  **Work with NodongU**  ](http://nodongu-client-quokka.s3-website.ap-northeast-2.amazonaws.com/)
 
 <br/>
 
