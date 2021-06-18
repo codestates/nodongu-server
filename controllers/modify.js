@@ -1,5 +1,5 @@
 const express = require('express');
-const {user, mylist, play, playlist} = require('../models'); // db에서 users table 땡겨오기.
+const {user, mylist, play, playlist} = require('../models');
 
 module.exports = {
 
@@ -13,7 +13,7 @@ module.exports = {
         .then(data1 => {
 
             if(!data1) {
-                return res.status(202).send({success: false}) // status 204 출력이 안되는 오류. 
+                return res.status(202).send({success: false})
             }
 
             user.update({
@@ -30,7 +30,7 @@ module.exports = {
 
     },
 
-    modImage: async (req, res) => { // Image data handling은 대기.
+    modImage: async (req, res) => {
 
         await user.findOne({
             where: {
