@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false })); 
 app.use(cookieParser())
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "http://nodongu-client-quokka.s3-website.ap-northeast-2.amazonaws.com",
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true,
   preflightContinue: true
